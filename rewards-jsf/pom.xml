@@ -30,7 +30,7 @@
       <dependency>
         <groupId>org.jbpm</groupId>
         <artifactId>jbpm-bom</artifactId>
-        <version>${jbpm.version}</version>
+        <version>6.0.2-redhat-2</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -137,6 +137,20 @@
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>jb-ip-6-build</id>
+      <name>BRMS/BPMS 6.0 Private MEAD Repository jb-ip-6-build</name>
+      <url>http://download.devel.redhat.com/brewroot/repos/jb-ip-6-build/latest/maven/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
   </repositories>

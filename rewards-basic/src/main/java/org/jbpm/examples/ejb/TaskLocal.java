@@ -26,5 +26,5 @@ import org.kie.api.task.model.TaskSummary;
 public interface TaskLocal {
     public List<TaskSummary> retrieveTaskList(String actorId) throws Exception;
 
-    public void approveTask(String actorId, long taskId) throws Exception;
+    public void approveTask(String actorId, long taskId, int nextStep) throws Exception;
 }

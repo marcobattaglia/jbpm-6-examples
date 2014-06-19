@@ -43,6 +43,7 @@ public class TaskServlet extends HttpServlet {
 
         String cmd = req.getParameter("cmd");
         String user = req.getParameter("user");
+        
 
         if (cmd.equals("list")) {
 
@@ -61,8 +62,9 @@ public class TaskServlet extends HttpServlet {
 
             String message = "";
             long taskId = Long.parseLong(req.getParameter("taskId"));
+            int nextStep = Integer.parseInt(req.getParameter("nextStep"));
             try {
-                taskService.approveTask(user, taskId);
+                taskService.approveTask(user, taskId, nextStep);
                 message = "Task (id = " + taskId + ") has been completed by " + user;
             } catch (ProcessOperationException e) {
                 // Recoverable exception

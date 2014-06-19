@@ -17,6 +17,7 @@
 package org.jbpm.examples.ejb;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -29,8 +30,14 @@ import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import org.jbpm.services.task.exception.PermissionDeniedException;
+import org.jbpm.services.task.utils.ContentMarshallerHelper;
 import org.kie.api.task.TaskService;
+import org.kie.api.task.model.Content;
+import org.kie.api.task.model.Task;
 import org.kie.api.task.model.TaskSummary;
+import org.kie.internal.task.api.ContentMarshallerContext;
+import org.kie.internal.task.api.TaskContentService;
+import org.kie.internal.task.api.TaskQueryService;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
@@ -41,14 +48,11 @@ public class TaskBean implements TaskLocal {
     private UserTransaction ut;
 
     @Inject
-    TaskService taskService;
+    TaskService taskService;   
     
     public List<TaskSummary> retrieveTaskList(String actorId) throws Exception {
-
-        ut.begin();
-        
-        List<TaskSummary> list;
-        
+        ut.begin();        
+        List<TaskSummary> list;        
         try {
             list = taskService.getTasksAssignedAsPotentialOwner(actorId, "en-UK");
             ut.commit();
@@ -60,17 +64,29 @@ public class TaskBean implements TaskLocal {
         System.out.println("retrieveTaskList by " + actorId);
         for (TaskSummary task : list) {
             System.out.println(" task.getId() = " + task.getId());
+           
+           getTaskData(taskService.getTaskById(task.getId()));
+            
         }
 
         return list;
     }
+    public Map<?, ?> getTaskData(Task task){
+    	 Content content = taskService.getContentById(task.getTaskData().getDocumentContentId());
+         Object result = ContentMarshallerHelper.unmarshall(content.getContent(), null);
+         Map<?, ?> map = (Map<?, ?>) result;
+         for (Map.Entry<?, ?> entry : map.entrySet()) {
+             System.out.println(entry.getKey() + " = " + entry.getValue());
+         }
+        return map;
+    }
 
-    public void approveTask(String actorId, long taskId) throws Exception {
+    public void approveTask(String actorId, long taskId, int nextStep) throws Exception {
 
         ut.begin();
 
         try {
-            System.out.println("approveTask (taskId = " + taskId + ") by " + actorId);
+            System.out.println("approveTask (taskId = " + taskId + ") by " + actorId + " next Step is: " +nextStep);
             taskService.start(taskId, actorId);
             taskService.complete(taskId, actorId, null);
 

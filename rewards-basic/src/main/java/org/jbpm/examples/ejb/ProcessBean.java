@@ -28,10 +28,11 @@ import javax.inject.Inject;
 import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
+import org.kie.api.definition.process.WorkflowProcess;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
-import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.kie.internal.runtime.manager.cdi.qualifier.Singleton;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 
@@ -69,9 +70,18 @@ public class ProcessBean implements ProcessLocal {
             // start a new process instance
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("recipient", recipient);
-            ProcessInstance processInstance = ksession.startProcess(
+            params.put("processVar1GeneralCTX", "Initial context value");
+            WorkflowProcessInstance  processInstance = (WorkflowProcessInstance) ksession.startProcess(
                     "com.sample.rewards-basic", params);
-
+            WorkflowProcess wp = (WorkflowProcess) processInstance.getProcess();
+            
+            System.out.println("Future activities:");
+            for(int i = 0; i< wp.getNodes().length; i++){
+            	
+            	System.out.println(wp.getNodes()[i].getName());
+            }
+        
+           
             processInstanceId = processInstance.getId();
 
             System.out.println("Process started ... : processInstanceId = "

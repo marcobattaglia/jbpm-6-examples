@@ -77,8 +77,10 @@ public class ProcessBean implements ProcessLocal {
             
             System.out.println("Future activities:");
             for(int i = 0; i< wp.getNodes().length; i++){
-            	
+            	//wp.getNodes()[15].getMetaData().get("Default")
+            	//wp.getNodes()[15].getOutgoingConnections("DROOLS_DEFAULT").get(3).getMetaData().get("UniqueID")
             	System.out.println(wp.getNodes()[i].getName());
+            	
             }
         
            

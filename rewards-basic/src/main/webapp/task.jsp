@@ -5,15 +5,15 @@
 <head>
 <title>Task management</title>
 </head>
-<script language="text/javascript">
-var letsgo=function(user, taskId){
+<script type="text/javascript">
+function letsgo(user, taskId){
 		var nextStep = 0;
         nextStepUI = document.getElementById("nextStepUI");
-		nextStepUI.options.each(function(el){
-           if(el.selected)
-				nextStep = el.value;
+		for(i=0;i<nextStepUI.options.length;i++){
+			if(nextStepUI.options[i].selected)
+				{nextStep = nextStepUI.options[i].value}
 		}
-        window.location.assign("task?user="+user"&taskId="+taskId+"&cmd=approve&nextStep="+nextStep);
+        window.location.assign("task?user="+user+"&taskId="+taskId+"&cmd=approve&nextStep="+nextStep);
 }
 </script>
 <body>
@@ -37,7 +37,7 @@ var letsgo=function(user, taskId){
 				<option>3</option>
 				<option>4</option>
 		   </select>
-<td><a href="javascript:letsgo(<%= user %>,<%= task.getId() %>)">Let's go next</a></td>
+<td><a href="javascript:letsgo('<%= user %>',<%= task.getId() %>)">Let's go next</a></td>
 </tr>
 <% } %>
 </table>

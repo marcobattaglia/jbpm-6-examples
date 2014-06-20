@@ -36,6 +36,7 @@ function letsgo(user, taskId){
 				<option>2</option>
 				<option>3</option>
 				<option>4</option>
+				<option value="4">default</option>
 		   </select>
 <td><a href="javascript:letsgo('<%= user %>',<%= task.getId() %>)">Let's go next</a></td>
 </tr>

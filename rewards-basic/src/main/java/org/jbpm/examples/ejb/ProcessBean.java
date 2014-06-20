@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
+import org.kie.api.definition.process.Connection;
 import org.kie.api.definition.process.WorkflowProcess;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
@@ -77,9 +78,15 @@ public class ProcessBean implements ProcessLocal {
             
             System.out.println("Future activities:");
             for(int i = 0; i< wp.getNodes().length; i++){
+            	String name = wp.getNodes()[i].getName();
+            	if (name.equals("Phase1")){
+            		//printFutureTask(wp, wp.getNodes()[i].getId());
+            	}
+            			
             	//wp.getNodes()[15].getMetaData().get("Default") 
             	//wp.getNodes()[15].getOutgoingConnections("DROOLS_DEFAULT").get(3).getMetaData().get("UniqueID")
-            	System.out.println(wp.getNodes()[i].getName());
+            	System.out.println(name);
+            	System.out.println(wp.getNodes()[i].getId());
             	
             }
         
@@ -101,4 +108,32 @@ public class ProcessBean implements ProcessLocal {
         return processInstanceId;
     }
 
+	private void printFutureTask(WorkflowProcess wp, long id) {
+		 long gtwID = wp.getNode(id).getOutgoingConnections("DROOLS_DEFAULT").get(0).getTo().getId();
+		 String gtwDefault = (String) wp.getNode(gtwID).getMetaData().get("Default");
+		 for (Connection outConn : wp.getNode(gtwID).getOutgoingConnections("DROOLS_DEFAULT")){
+			if( outConn.getMetaData().get("UniqueI").equals(gtwDefault)){
+				if(outConn.getTo() instanceof org.jbpm.workflow.core.node.Join){
+					outConn = getNextGtwConn(wp, outConn.getTo().getId());
+				}
+			
+				System.out.print(outConn.getTo().getName());
+				printFutureTask(wp, outConn.getTo().getId());
+			}
+				
+		 }
+			
+	}	
+		
+	
+	private Connection getNextGtwConn(WorkflowProcess wp, long gtwID){
+		String gtwDefault = (String) wp.getNode(gtwID).getMetaData().get("Default");
+		 for (Connection outConn : wp.getNode(gtwID).getOutgoingConnections("DROOLS_DEFAULT")){
+			if( outConn.getMetaData().get("UniqueI").equals(gtwDefault)){
+				return outConn;
+			}
+}
+	
+	return null;
+}
 }

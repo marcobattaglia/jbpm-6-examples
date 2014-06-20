@@ -90,7 +90,7 @@ public class TaskBean implements TaskLocal {
             System.out.println("approveTask (taskId = " + taskId + ") by " + actorId + " next Step is: " +nextStep);
             taskService.start(taskId, actorId);
             Map<String, Object> results = new HashMap<String, Object>();
-            results.put("taskNextStep", ""+nextStep);
+            results.put("taskNextStep",nextStep);
             taskService.complete(taskId, actorId, results);
           
             //Thread.sleep(10000); // To test OptimisticLockException

@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml">
+    <f:metadata>
+        <f:viewParam name="user" value="#{taskController.user}" />
+        <f:viewParam name="taskId" value="#{taskController.taskId}" />
+        <f:event type="preRenderView" listener="#{taskController.retrieveInfo}" />
+    </f:metadata>
+
+    <ui:param name="pageTitle" value="Human Tasks" />
+
+    <ui:define name="content">
+     <h:form>
+        <h:panelGroup rendered="#{empty taskController.infos}">
+            <h:outputLabel value="User #{taskController.user} has no pending tasks."></h:outputLabel>
+        </h:panelGroup>
+        <h:dataTable id="userTasksTable" border="1" rendered="#{not empty taskController.infos}"
+                     value="#{taskController.infos}" var="_item">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Key" />
+                </f:facet>
+                <h:outputText id="infoType" value="#{_item.type}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:inputText value="Content" />
+                </f:facet>
+                <h:inputText id="infoContent" value="#{_item.content}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Value" />
+                </f:facet>
+                <h:outputText id="infoValue" value="#{_item.value}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="isValid" />
+                </f:facet>
+                <h:selectBooleanCheckbox  label="" value="#{_item.status}"/>
+                
+            </h:column>
+        </h:dataTable>
+        <h:commandButton action="#{taskController.approveTask}" value="Submit"  label="Check"/>
+       </h:form>
+    </ui:define>
+</ui:composition>

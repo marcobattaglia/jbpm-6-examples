@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>unicredit-basic</context-root>
+</jboss-web>

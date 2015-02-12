@@ -1,4 +1,4 @@
-rewards-basic
+Asyouwant-basic
 =============
 
 This is an example web application for jBPM 6. It was created by forking the rewards-basic application by Toshiya Kobayashi:
@@ -10,9 +10,10 @@ This simple example aims to provide an example usage of:
 - Human tasks
 - Persistence
 - Transactions
-- Singleton session manager
+- Session manager
 - Context dependency injection
 - Maven
+- Collaboration with business-central
 
 ### Steps to run
 - Make sure you have at least Java 6 and Maven 3 installed
@@ -24,9 +25,11 @@ This simple example aims to provide an example usage of:
  - cd jbpm-6-examples/rewards-basic
  - mvn clean package
  - mvn jboss-as:deploy
-- Visit http://localhost:8080/rewards-basic/ with a web browser
- - [Start Reward Process] is to start a new process
- - [John's Task] is to list John's tasks and approve them
- - [Mary's Task] is to list Mary's tasks and approve them
+- Visit http://localhost:8080/asyouwant-basic/ with a web browser
+ - Apri pratica (it starts a new process)
+ - TaskList (it retrieves the task list)
+- Processes and task could be started and worked both by application and business-central
+ - The process is on a remte repo, managed by the business central
+ - This example show how to manage process using runtimemanager. Runtime managers are identified by deploymentid. 
 
 
